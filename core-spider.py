@@ -80,6 +80,7 @@ def get_one_page(page,keyword,cityid,cursor,db,date,table_name,):
 						job_dict['learning'] = key_result['学习']
 						job_dict['analysis'] = key_result['分析']
 						job_dict['majorization'] = key_result['优化']
+						#print(job_dict)
 						operate_and_save(job_dict,cursor,db,date,table_name)
 					else:
 						print("----该网页404----" + detailed_url)
@@ -224,21 +225,21 @@ def key_word_classify(job_describe):
 def city_position(city_name):
 	with open('city-lat&lon.txt','r',encoding = 'utf-8') as f:
 		f = f.read()
-	if f.startswith(u'\ufeff'):
-		f = f.encode('utf-8')[3:].decode('utf-8')
 		jf = json.loads(f)
+
 	try:
 		num = jf[city_name].find(",")
 		position = {"lon":jf[city_name][:num],"lat":jf[city_name][num+1:]}
 	except Exception as e:
 		position = {"lon":0,"lat":0}
 		print(e)
+
 	return position
 
 
 def pre_database(date):
 	""" 连接数据库，创建表"""
-	table_name = "tb_job_"+ str(date.strftime("%Y%m%d"))
+	table_name = "tb_job_"+str(date.strftime("%Y%m%d"))
 	try:
 		db = pymysql.connect(
 			host = 'localhost',
@@ -250,7 +251,7 @@ def pre_database(date):
 		print(e)
 	try:
 		cursor = db.cursor()
-		sql = """CREATE DATABASE IF NOT EXISTS hr_analysis DEFAULT CHARACTER SET utf8mb4 """
+		sql = """CREATE DATABASE IF NOT EXISTS hr_analysis DEFAULT CHARACTER SET utf8 """
 		cursor.execute(sql)
 		sql = """USE hr_analysis"""
 		cursor.execute(sql)
