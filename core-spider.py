@@ -183,10 +183,13 @@ def job_classify(job_name):
 	for fn in functions:
 		if fn in job_name.upper():
 			job_class['function'] = fn
+			break
 		elif '组织' in job_name or '发展' in job_name:
 			job_class['function'] = '组织发展'
+			break
 		else:
-			job_class['function'] = ''
+			job_class['function'] = '未识别'
+
 	for rk in ranks:
 		if '助理'in job_name:
 			job_class['rank'] = '专员'
@@ -245,7 +248,7 @@ def pre_database(date):
 			host = 'localhost',
 			port = 3306,
 			user = 'root',
-			password = 'Zhangyang5',
+			password = 'root',
 		)
 	except Exception as e:
 		print(e)

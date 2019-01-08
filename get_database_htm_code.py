@@ -17,7 +17,7 @@ def connect_database():
 			host = 'localhost',
 			port = 3306,
 			user = 'root',
-			password = 'Zhangyang5',
+			password = 'root',
 			db = 'hr_analysis',
 		)
 	except Exception as e:
