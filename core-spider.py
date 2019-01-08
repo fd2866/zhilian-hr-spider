@@ -79,7 +79,7 @@ def get_one_page(page,keyword,cityid,cursor,db,date,table_name,):
 						job_dict['resist_compression'] = key_result['抗压']
 						job_dict['learning'] = key_result['学习']
 						job_dict['analysis'] = key_result['分析']
-						job_dict['majorization'] = key_result['优化']
+						job_dict['optimize'] = key_result['优化']
 						#print(job_dict)
 						operate_and_save(job_dict,cursor,db,date,table_name)
 					else:
@@ -214,7 +214,7 @@ def key_word_classify(job_describe):
 
 	"""
 	result = {'data':3,'innovation':3,'communication':3,'coordination':3,'labor_law':3,'logic':3,'responsibility':3,
-	          'team':3,'resist_compression':3,'learning':3,'analysis':3,'majorization':3}
+	          'team':3,'resist_compression':3,'learning':3,'analysis':3,'optimize':3}
 	if key_word[0] in job_describe:
 		result['data'] = 1
 	else:
@@ -280,7 +280,7 @@ def pre_database(date):
 			htm_code_fk VARCHAR(254) NOT NULL UNIQUE ,
 			kw_data INT(10),kw_innovation INT(10),kw_communication INT(10),kw_coordination INT(10),
  			kw_labor_law INT(10),kw_logic INT(10),kw_responsibility INT(10),kw_team INT(10),
- 			kw_resist_compression INT(10),kw_learning INT(10),kw_analysis INT(10),kw_majorization INT(10)
+ 			kw_resist_compression INT(10),kw_learning INT(10),kw_analysis INT(10),kw_optimize INT(10)
 			);""".format(table_name)
 		cursor.execute(sql)
 	except Exception as e:
@@ -297,86 +297,86 @@ def operate_and_save(jobdata,cursor,db,getdate,table_name):
 	if jobdata['lat'] and jobdata['salary_down'] and jobdata['salary_up']:
 		sql = """INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,edu_level,empl_type,job_name,job_type,salary,salary_down, salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}","{12}","{13}","{14}","{15}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}","{11}","{12}","{13}","{14}","{15}",
 	 "{16}","{17}","{18}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}","{33}","{34}")""".format(table_name,jobdata['city'],
 		jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'],jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 		jobdata['salary_down'],jobdata['salary_up'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'], jobdata['lat'],jobdata['lon'],jobdata['job_describe'],getdate,
 		jobdata['job_function'],jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],	jobdata['innovation'],jobdata['communication'],jobdata['coordination'],
-		jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+		jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] == '' and jobdata['salary_down'] and jobdata['salary_up']:
 		position = city_position(jobdata['city'])
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,edu_level,empl_type,job_name,job_type,salary,salary_down, salary_up,welfare,update_date,working_exp,
  	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}",	"{9}", "{10}","{11}","{12}","{13}","{14}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}",	"{9}", "{10}","{11}","{12}","{13}","{14}",
 	 "{15}","{16}","{17}","{18}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}","{33}","{34}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'],jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['salary_down'],jobdata['salary_up'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],position['lat'],position['lon'],jobdata['job_describe'],
 	 getdate,jobdata['job_function'],	 jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],
-	 jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] == '' and jobdata['salary_down'] == 0 and jobdata['salary_up'] == 0:
 		position = city_position(jobdata['city'])
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,edu_level,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}", NULL ,NULL ,"{10}","{11}","{12}","{13}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}", NULL ,NULL ,"{10}","{11}","{12}","{13}",
 	 "{14}","{15}","{16}","{17}","{18}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'],jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],position['lat'],position['lon'],jobdata['job_describe'],getdate,jobdata['job_function'],jobdata['job_rank'],
 	 jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],
-	 jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] == '' and jobdata['salary_down'] == 0 and jobdata['salary_up']:
 		position = city_position(jobdata['city'])
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,edu_level,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
  	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}",NULL ,"{10}","{11}","{12}","{13}","{14}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}",NULL ,"{10}","{11}","{12}","{13}","{14}",
 	 "{15}","{16}","{17}","{18}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}","{33}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'],jobdata['eduLevel'], jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['salary_up'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],position['lat'],position['lon'],jobdata['job_describe'],getdate,jobdata['job_function'],
 	 jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],
-	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] == '' and jobdata['salary_down'] and jobdata['salary_up'] == 0:
 		position = city_position(jobdata['city'])
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,eduLevel,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}", NULL ,"{11}","{12}",,"{13}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}", NULL ,"{11}","{12}",,"{13}",
 	 "{14}","{15}","{16}","{17}","{18}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}","{33}")""".format(table_name, jobdata['city'],
 	jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'],jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	jobdata['salary_down'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],position['lat'],position['lon'],jobdata['job_describe'],getdate, jobdata['job_function'],
 	jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],
-	jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] and jobdata['salary_down'] == 0 and jobdata['salary_up'] == 0:
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,eduLevel,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}", NULL ,NULL ,"{10}","{11}","{12}","{13}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}", NULL ,NULL ,"{10}","{11}","{12}","{13}",
 	 "{14}","{15}","{16}","{17}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'], jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],jobdata['lat'],jobdata['lon'],jobdata['job_describe'],getdate,jobdata['job_function'],jobdata['job_rank'],
 	 jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],jobdata['responsibility'],
-	 jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['team'],jobdata['resist_compression'],	jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] and jobdata['salary_down'] == 0 and jobdata['salary_up']:
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,eduLevel,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}" ,NULL ,"{10}","{11}","{12}","{13}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}" ,NULL ,"{10}","{11}","{12}","{13}",
 	 "{14}","{15}","{16}","{17}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'], jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['salary_up'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],jobdata['lat'],jobdata['lon'],jobdata['job_describe'],getdate,jobdata['job_function'],
 	 jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],
-	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	elif jobdata['lat'] and jobdata['salary_down'] and jobdata['salary_up'] == 0:
 		sql = """ INSERT INTO {0} (city,company_name,company_size,company_type,company_industry,eduLevel,empl_type,job_name,job_type,salary,salary_down,salary_up,welfare,update_date,working_exp,
 	 latitude,longitude,job_describe,got_day,job_function,job_rank,htm_code_fk,kw_data,kw_innovation,kw_communication,kw_coordination,kw_labor_law,kw_logic,kw_responsibility,
-	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_majorization)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}" ,NULL ,"{11}","{12}","{13}",
+	 kw_team,kw_resist_compression,kw_learning,kw_analysis,kw_optimize)VALUES ("{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}","{10}" ,NULL ,"{11}","{12}","{13}",
 	 "{14}","{15}","{16}","{17}","{19}","{20}","{21}","{22}","{23}","{24}","{25}","{26}","{27}","{28}","{29}","{30}","{31}","{32}")""".format(table_name,jobdata['city'],
 	 jobdata['company_name'],jobdata['company_size'],jobdata['companyType'],jobdata['industry'], jobdata['eduLevel'],jobdata['emplType'],jobdata['jobname'],jobdata['jobType'],jobdata['salary'],
 	 jobdata['salary_up'],jobdata['welfare'],jobdata['updateDate'],jobdata['workingExp'],jobdata['lat'],jobdata['lon'],jobdata['job_describe'],getdate,jobdata['job_function'],
 	 jobdata['job_rank'],jobdata['htm_code_fk'],jobdata['data'],jobdata['innovation'],jobdata['communication'],jobdata['coordination'],jobdata['labor_law'],jobdata['logic'],
-	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['majorization'])
+	 jobdata['responsibility'],jobdata['team'],jobdata['resist_compression'],jobdata['learning'],jobdata['analysis'],jobdata['optimize'])
 
 	#print(sql)
 	try:
