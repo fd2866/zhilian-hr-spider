@@ -242,7 +242,7 @@ def city_position(city_name):
 
 def pre_database(date):
 	""" 连接数据库，创建表"""
-	table_name = "tb_job_"+str(date.strftime("%Y%m%d"))
+	table_name = "tb_zhilian_job_"+str(date.strftime("%Y%m%d"))
 	try:
 		db = pymysql.connect(
 			host = 'localhost',
@@ -286,9 +286,10 @@ def pre_database(date):
  			kw_resist_compression INT(10),kw_learning INT(10),kw_analysis INT(10),kw_optimize INT(10)
 			);""".format(table_name)
 		cursor.execute(sql)
+		db.commit()
 	except Exception as e:
 		print(e)
-	db.commit()
+
 	global all_detail_htm
 	all_detail_htm = get_database_htm_code.connect_database() #查询数据库中的htm_code 用于去重
 	return cursor,db,table_name
