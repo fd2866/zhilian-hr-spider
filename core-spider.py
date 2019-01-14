@@ -291,7 +291,7 @@ def pre_database(date):
 		print(e)
 
 	global all_detail_htm
-	all_detail_htm = get_database_htm_code.connect_database() #查询数据库中的htm_code 用于去重
+	all_detail_htm = get_database_htm_code.connect_database(table_name) #查询数据库中的htm_code 用于去重
 	return cursor,db,table_name
 
 

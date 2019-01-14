@@ -5,12 +5,9 @@
 @time:2019/1/410:13
 """
 import pymysql
-import datetime
 
-def connect_database():
+def connect_database(table_name):
 	""" 连接数据库，创建表"""
-	date = datetime.date.today()
-	table_name = "tb_job_"+ str(date.strftime("%Y%m%d"))
 	all_htm_code = []
 	try:
 		db = pymysql.connect(
@@ -24,7 +21,7 @@ def connect_database():
 		print(e)
 
 	cursor = db.cursor()
-	sql = "SELECT htm_code_fk FROM {0}".format(table_name)
+	sql = "SELECT htm_code_fk FROM %s"%table_name
 	try:
 		cursor.execute(sql)
 	except Exception as e:
